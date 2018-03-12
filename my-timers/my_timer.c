@@ -13,6 +13,7 @@ void set_next_timer(void )
 	if (NULL != timers_list->next)
 	{
 		timers_list = timers_list->next;
+		free(tmp);
 	}
 	else
 	{
