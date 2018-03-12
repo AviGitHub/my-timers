@@ -22,4 +22,4 @@ struct Timer_node
 };
 
 
-TIMER_HANLDE create_timer(size_t timeout, void(*callback)(void));
+TIMER_HANLDE create_timer(ULONG timeout, void(*callback)(void));
