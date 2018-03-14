@@ -4,7 +4,6 @@ HANDLE threadHandle;
 static ULONG running_timer = 0;
 static ULONG comperator = 0;
 void(*clck_callback)(void);
-void(*set_next_callback)(void);
 
 DWORD WINAPI update_running_timer(void * data)
 {
@@ -20,11 +19,6 @@ DWORD WINAPI update_running_timer(void * data)
 			if (NULL != clck_callback) 
 			{
 				(*clck_callback)();
-			}
-			
-			if (NULL != set_next_callback)
-			{
-				(*set_next_callback)();
 			}
 		}
 	}
@@ -51,19 +45,17 @@ void end_my_clock()
 	}
 }
 
-void set_comperator(ULONG interval, void(*callback)(void))
+
+void set_comperator(ULONG interval)
 {
 	comperator = interval;
+}
+
+void set_my_clock_timeout_callback(void(*callback)(void))
+{
 	clck_callback = callback;
 }
 
-void set_next_after_timeout(void(*callback)(void))
-{
-	if (NULL != callback)
-	{
-		set_next_callback = callback;
-	}	
-}
 
 ULONG get_current_time()
 {

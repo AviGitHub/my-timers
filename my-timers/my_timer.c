@@ -4,37 +4,35 @@
 
 Timer_node* timers_list = NULL;
 
-
-void set_next_timer(void )
+void launcher(void)
 {
-	// delete the first timer
-	Timer_node * tmp = timers_list;
-	
-	if (NULL != timers_list->next)
+	if (timers_list != NULL)
 	{
+		// fire the callback
+		if(timers_list->timer->callback != NULL)
+		{
+			(*(timers_list->timer->callback))();
+		}
+
+		// remove the current node
+		Timer_node * tmp = timers_list;
 		timers_list = timers_list->next;
 		free(tmp->timer);
 		free(tmp);
-	}
-	else
-	{
-		free(tmp->timer);
-		free(tmp);
-		set_comperator(0, NULL);
-		return;
-	}	
 
-	// register the new timeout callback
-	if (NULL != timers_list->timer->callback)
-	{
-		set_comperator(timers_list->timer->timout, timers_list->timer->callback);
+		if (timers_list->timer != NULL)
+		{
+			set_comperator(timers_list->timer->timout);
+		}
 	}
 }
 
 
-
 TIMER_HANLDE instert_timer_to_list(TIMER_HANLDE timer, ULONG timeout)
 {
+	set_my_clock_timeout_callback(launcher);
+
+
 	// compute actual timeout
 	ULONG current_time = get_current_time();
 	ULONG computed_timeout = current_time + timeout;
@@ -49,11 +47,7 @@ TIMER_HANLDE instert_timer_to_list(TIMER_HANLDE timer, ULONG timeout)
 	{
 		new_timer_node->next = NULL;
 		timers_list = new_timer_node;
-		
-		// register timeout handler callback to my clock
-		set_next_after_timeout(&set_next_timer);
-
-		set_comperator(computed_timeout, timer->callback);
+		set_comperator(computed_timeout);
 		
 		return timer;
 	}
@@ -64,7 +58,7 @@ TIMER_HANLDE instert_timer_to_list(TIMER_HANLDE timer, ULONG timeout)
 		new_timer_node->next = timers_list;
 		timers_list = new_timer_node;
 
-		set_comperator(computed_timeout, timer->callback);
+		set_comperator(computed_timeout);
 
 		return timer;
 	}

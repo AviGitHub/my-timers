@@ -8,8 +8,8 @@ void start_my_clock();
 
 void end_my_clock();
 
-void set_comperator(ULONG interval, void(*callback)(void));
+void set_comperator(ULONG interval);
 
-void set_next_after_timeout(void(*callback)(void));
+void set_my_clock_timeout_callback(void (*callback)(void));
 
 ULONG get_current_time();
