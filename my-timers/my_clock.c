@@ -9,18 +9,18 @@ DWORD WINAPI update_running_timer(void * data)
 {
 	while (1)
 	{
-		Sleep(1);
-		++running_timer;
-
-		if (comperator == running_timer) 
+		if (comperator == running_timer && comperator != 0)
 		{
-			printf("timeout reached, firing callback\n");
+			printf("timeout reached at %d, firing callback\n", running_timer);
 
-			if (NULL != clck_callback) 
+			if (NULL != clck_callback)
 			{
 				(*clck_callback)();
 			}
 		}
+
+		++running_timer;
+		Sleep(1);
 	}
 
 	return 0;
@@ -45,7 +45,6 @@ void end_my_clock()
 	}
 }
 
-
 void set_comperator(ULONG interval)
 {
 	comperator = interval;
@@ -55,7 +54,6 @@ void set_my_clock_timeout_callback(void(*callback)(void))
 {
 	clck_callback = callback;
 }
-
 
 ULONG get_current_time()
 {
