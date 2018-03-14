@@ -23,9 +23,11 @@ void main()
 	printf("crate timer for 0.5 sec for foobar\n");
 	create_timer(0.5 * SEC, &foobar);
 
-	Sleep(10 * SEC);
+	Sleep(5 * SEC);
 
 	end_my_clock();
+
+	printf("Please press anything to quit\n");
 
 	getchar();
 }
